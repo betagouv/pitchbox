@@ -2,7 +2,7 @@ import path from 'path';
 import express from 'express';
 import axios from 'axios';
 import { Request, Response } from "express";
-
+const seedrandom = require('seedrandom');
 
 const app = express();
 
@@ -11,6 +11,7 @@ app.set('views', path.join(__dirname, '../views'));
 
 app.use('/static', express.static(path.join(__dirname, '../static')));
 app.use('/node_modules/reveal.js', express.static(path.join(__dirname, '../node_modules/reveal.js'))); 
+app.use('/node_modules/flipdown', express.static(path.join(__dirname, '../node_modules/flipdown'))); 
 
 
 const config = {
@@ -40,20 +41,23 @@ const getStartupsFromAPI = async () => axios.get<StartupAPIResult>(config.startu
 
 
 app.get('/', (_: Request, res: Response) => {
-  return res.redirect("/slide/random");
+  const seed = Date.now();
+  return res.redirect(`/slide/${seed}`);
 });
 
-function shuffleArray<Type>(array: Array<Type>): Array<Type> {
+function shuffleArray<Type>(array: Array<Type>, randomFunction: () => number): Array<Type> {
   for (let i = array.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
+      const j = Math.floor(randomFunction() * (i + 1));
       [array[i], array[j]] = [array[j], array[i]];
   }
   return array;
 }
 
-app.get('/slide/:seed', async (_: Request, res: Response) => {
+app.get('/slide/:seed', async (req: Request, res: Response) => {
+  const { seed } = req.params;
   const startups = await getStartupsFromAPI();
-  const startupShuffled = shuffleArray(startups);
+  const randomFunction = seedrandom(seed);
+  const startupShuffled = shuffleArray(startups, randomFunction);
   res.render("slide", {
       startups: startupShuffled
   });

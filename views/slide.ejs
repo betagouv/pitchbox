@@ -1,28 +1,51 @@
 <link rel="stylesheet" href="/node_modules/reveal.js/dist/reveal.css">
 <link rel="stylesheet" href="/node_modules/reveal.js/dist/theme/black.css">
+<link rel="stylesheet" href="/node_modules/flipdown/dist/flipdown.css">
 
 <div class="reveal">
     <div class="slides">
-        <section data-markdown data-separator="---">
-            <script type="text/template">
-            ## Pitchbox 
-            ---
-            <% startups.forEach(function(startup) { %>
-            ## <%= startup.attributes.name %>
-            <%= startup.attributes.pitch %>
-            ---
-            <% }) %>
-            ## C'est fini ^^
-            </script>
+        <section>
+            <h2>Pitchbox</h2>
+        </section>
+        <% startups.forEach(function(startup) { %>
+        <section>
+            <h2><%= startup.attributes.name %></h2>
+            <p><%= startup.attributes.pitch %></p>
+            <h1 class="countdown"></h1>
+        </section>
+        <% }) %>
+        <section>
+            <h2>C'est fini</h2>
         </section>
     </div>
 </div>
 
 <script src="/node_modules/reveal.js/dist/reveal.js"></script>
 <script src="/node_modules/reveal.js/plugin/markdown/markdown.js"></script>
+<script src="/node_modules/flipdown/dist/flipdown.js"></script>
 <script>
   Reveal.initialize({     
       plugins: [ RevealMarkdown ],
-      transition: 'none' 
+      transition: 'none'
   });
+  var currentCountDown;
+  var currentCount = 0;
+  Reveal.on('slidechanged', event => {
+    currentCountDown = event.currentSlide.getElementsByClassName("countdown")[0];
+    currentCount = 60;
+    if(currentCountDown) {
+        currentCountDown.innerText = currentCount;
+    }
+  });
+  function counting() {
+    setInterval(function () {
+        currentCount--;
+        if(currentCountDown) {
+            currentCountDown.innerText = currentCount;   
+        }
+    }, 1000);
+  }
+  window.onload = function () {
+    counting();
+  }
 </script>
