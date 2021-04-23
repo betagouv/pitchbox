@@ -24,11 +24,11 @@
   },
   "dependencies": {
     "@octokit/request": "^5.4.14",
+    "@pqina/flip": "^1.7.7",
     "axios": "^0.21.1",
     "dotenv": "^8.2.0",
     "ejs": "^3.1.6",
     "express": "^4.16.3",
-    "flipdown": "^0.3.2",
     "reveal.js": "^4.1.0",
     "seedrandom": "^3.0.5"
   },

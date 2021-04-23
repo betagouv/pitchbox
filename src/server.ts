@@ -11,7 +11,7 @@ app.set('views', path.join(__dirname, '../views'));
 
 app.use('/static', express.static(path.join(__dirname, '../static')));
 app.use('/node_modules/reveal.js', express.static(path.join(__dirname, '../node_modules/reveal.js'))); 
-app.use('/node_modules/flipdown', express.static(path.join(__dirname, '../node_modules/flipdown'))); 
+app.use('/node_modules/@pqina/flip/dist', express.static(path.join(__dirname, '../node_modules/@pqina/flip/dist'))); 
 
 
 const config = {

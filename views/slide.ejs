@@ -1,7 +1,11 @@
 <link rel="stylesheet" href="/node_modules/reveal.js/dist/reveal.css">
 <link rel="stylesheet" href="/node_modules/reveal.js/dist/theme/black.css">
-<link rel="stylesheet" href="/node_modules/flipdown/dist/flipdown.css">
-
+<link rel="stylesheet" href="/node_modules/@pqina/flip/dist/flip.min.css">
+<style>
+    .tick {
+        font-size: 2em;
+    }
+</style>
 <div class="reveal">
     <div class="slides">
         <section>
@@ -11,7 +15,12 @@
         <section>
             <h2><%= startup.attributes.name %></h2>
             <p><%= startup.attributes.pitch %></p>
-            <h1 class="countdown"></h1>
+            <div class="tick"
+                data-value="60">
+                <div data-repeat="true">
+                    <span data-view="flip"></span>
+                </div>
+            </div>
         </section>
         <% }) %>
         <section>
@@ -22,26 +31,23 @@
 
 <script src="/node_modules/reveal.js/dist/reveal.js"></script>
 <script src="/node_modules/reveal.js/plugin/markdown/markdown.js"></script>
-<script src="/node_modules/flipdown/dist/flipdown.js"></script>
+<script src="/node_modules/@pqina/flip/dist/flip.js"></script>
 <script>
   Reveal.initialize({     
       plugins: [ RevealMarkdown ],
       transition: 'none'
   });
-  var currentCountDown;
-  var currentCount = 0;
+  var currentTick;
   Reveal.on('slidechanged', event => {
-    currentCountDown = event.currentSlide.getElementsByClassName("countdown")[0];
-    currentCount = 60;
-    if(currentCountDown) {
-        currentCountDown.innerText = currentCount;
+    currentTick = event.currentSlide.getElementsByClassName("tick")[0];
+    if(currentTick) {
+        currentTick.dataset.value = 60;
     }
   });
   function counting() {
     setInterval(function () {
-        currentCount--;
-        if(currentCountDown) {
-            currentCountDown.innerText = currentCount;   
+        if(currentTick) {
+            currentTick.dataset.value--;
         }
     }, 1000);
   }
